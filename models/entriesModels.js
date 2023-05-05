@@ -10,10 +10,8 @@ const pool = new Pool({
     password: process.env.ELEPHANT_PASS,
 });
 
-const getAllProducts = async (query) => {
+const getAllProducts = async (user, limit, skip) => {
 
-    let { user, limit, skip } = query
-    //console.log(req.query)
     let client, result, data;
     try {
         //connect to db
@@ -24,8 +22,8 @@ const getAllProducts = async (query) => {
         } else {
             data = await client.query(queries.getAllByUser, [user, limit, skip])
         }
-
         result = data.rows
+
     } catch (error) {
         console.log(error)
         throw error
@@ -69,15 +67,21 @@ const getProductById = async (id) => {
 }
 
 
-const searchProducts = async (search, limit, skip) => {
+const searchProducts = async (search, limit, skip, category) => {
 
-    let client, result;
+    let client, result, data;
     try {
         //connect to db
         client = await pool.connect()
         //make call, using command collected from queries.js 
-        const data = await client.query(queries.searchEntries, [`%${search}%`, limit, skip])
-        console.log(`%${search}%`)
+        if (!category) {
+
+            data = await client.query(queries.searchEntries, [`%${search}%`, limit, skip])
+        } else {
+
+            data = await client.query(queries.searchEntriesCategory, [`%${search}%`, category, limit, skip])
+        }
+
         result = data.rows
     } catch (error) {
         console.log(error)
@@ -106,7 +110,7 @@ const updateProduct = async (body) => {
 }
 
 const createProduct = async (body) => {
-    console.log(body.title, body.description, body.image, body.email, body.category, body.claimed)
+
 
     let client, result;
     try {

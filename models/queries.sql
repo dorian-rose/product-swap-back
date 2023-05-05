@@ -26,7 +26,7 @@ CREATE TABLE entries (
   date date DEFAULT CURRENT_DATE,
   email varchar(100) NOT NULL,
   category varchar(15),
- claimed boolean
+ claimed boolean,
   FOREIGN KEY (email) REFERENCES users(email)
 );
 
@@ -37,3 +37,33 @@ VALUES
 ('watch', 'Vintage gold wristwatch','image1', 'isa@correo.es','accessories', 'no'),
 ('shoes', 'Brown leather shoes','image2', 'ana@correo.es','shoes', 'no')
 
+
+--CREATE ROLES TABLE --
+CREATE TABLE roles (
+  email         VARCHAR(100) NOT NULL UNIQUE PRIMARY KEY,
+  role          VARCHAR(50) NOT NULL,
+FOREIGN KEY (email) REFERENCES users(email)
+);
+
+-- TEST DATA ROLES
+INSERT INTO roles(email, role)
+VALUES 
+('isa@correo.es','user'),
+('ana@correo.es','user')
+
+
+--CREATE TEXTS TABLE --
+--Text descriptions for product categories --
+CREATE TABLE texts (
+  id_entry serial NOT NULL PRIMARY KEY,  
+  description text NOT NULL,
+  image varchar(255),
+  category varchar(15) NOT NULL
+);
+
+
+-- TEST DATA TEXTS
+INSERT INTO texts(description, category)
+VALUES 
+('description category1','category1'),
+('description category2','category2')
