@@ -11,13 +11,13 @@ const pool = new Pool({
 });
 
 //get all users' details
-const getUsers = async () => {
+const getUsers = async (limit, skip) => {
     let client, result;
     try {
         //connect to db
         client = await pool.connect()
         //collect command from queries.js and call to db
-        const data = await client.query(queries.getAllUsers)
+        const data = await client.query(queries.getAllUsers, [limit, skip])
         result = data.rows
     } catch (error) {
         console.log(error)

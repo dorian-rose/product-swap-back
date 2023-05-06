@@ -3,14 +3,27 @@ const { getUsers, getOneUser, createUser, changeUser, removeUser } = require("..
 
 //get detail of all users
 const getAllUsers = async (req, res) => {
+    const { limit, page } = req.query
+    const skip = (page - 1) * limit
     try {
         //call to userModels
-        const users = await getUsers()
+        const data = await getUsers(limit, skip)
+        if (data.length == 0) {
+            return res.status(404).json({ ok: false, msg: "No users found" })
+        } else {
+            //find total pages and current page
+            const total_results = data[0].total_results
+            const total_pages = Math.ceil(total_results / limit)
 
-        res.status(200).json({
-            ok: true,
-            users
-        });
+            //return all data
+            return res.status(200).json({
+                ok: true,
+                data,
+                total_pages,
+                page,
+                total_results
+            })
+        }
     }
     catch (error) {
         res.status(404).json({
@@ -26,11 +39,11 @@ const getUser = async (req, res) => {
     try {
         const { email } = req.query;
         //call userModels
-        const user = await getOneUser(email)
+        const data = await getOneUser(email)
 
         res.status(200).json({
             ok: true,
-            user
+            data
         });
     }
     catch (error) {
