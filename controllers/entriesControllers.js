@@ -4,16 +4,25 @@ const { getAllProducts, getProductsByCategory, getProductById, searchProducts, u
 
 //retrieve details of all entries from all authors.
 const getAllEntries = async (req, res) => {
-
+    const { user, limit, page } = req.query
+    const skip = (page - 1) * limit
     try {
         //call to entriesModels
-        const entries = await getAllProducts(req.query)
-        if (entries.length == 0) {
+        const data = await getAllProducts(user, limit, skip)
+        if (data.length == 0) {
             return res.status(404).json({ ok: false, msg: "No entries available" })
         } else {
+            //find total pages and current page
+            const total_results = data[0].total_results
+            const total_pages = Math.ceil(total_results / limit)
+
+            //return all data
             return res.status(200).json({
                 ok: true,
-                entries
+                data,
+                total_pages,
+                page,
+                total_results
             })
         }
     } catch (error) {
@@ -24,17 +33,26 @@ const getAllEntries = async (req, res) => {
 //get all entries of one category
 const getByCategory = async (req, res) => {
 
-    let { category, limit, skip } = req.query
-    //console.log(req.query)
+    let { category, limit, page } = req.query
+    const skip = (page - 1) * limit
+    console.log(skip)
     try {
         //call to entriesModels
-        const entries = await getProductsByCategory(category, limit, skip)
-        if (entries.length == 0) {
-            return res.status(404).json({ ok: false, msg: "No entries available" })
+        const data = await getProductsByCategory(category, limit, skip)
+        if (data.length == 0) {
+            return res.status(404).json({ ok: false, msg: `No ${category} available` })
         } else {
+            //find total pages and current page
+            const total_results = data.length
+            const total_pages = Math.ceil(total_results / limit)
+
+            //return all data
             return res.status(200).json({
                 ok: true,
-                entries
+                data,
+                total_pages,
+                page,
+                total_results
             })
         }
     } catch (error) {
@@ -50,13 +68,13 @@ const getById = async (req, res) => {
     //console.log(req.query)
     try {
         //call to entriesModels
-        const entries = await getProductById(id)
-        if (entries.length == 0) {
+        const data = await getProductById(id)
+        if (data.length == 0) {
             return res.status(404).json({ ok: false, msg: "No entries available" })
         } else {
             return res.status(200).json({
                 ok: true,
-                entries
+                data
             })
         }
     } catch (error) {
@@ -66,17 +84,24 @@ const getById = async (req, res) => {
 
 const searchEntries = async (req, res) => {
 
-    const { search, limit, skip } = req.query
-
+    const { search, limit, page, category } = req.query
+    const skip = (page - 1) * limit
     try {
         //call to entriesModels
-        const entries = await searchProducts(search, limit, skip)
-        if (entries.length == 0) {
+        const data = await searchProducts(search, limit, skip, category)
+        if (data.length == 0) {
             return res.status(404).json({ ok: false, msg: "No entries available" })
         } else {
+            //find total pages and current page
+            const total_results = data.length
+            const total_pages = Math.ceil(total_results / limit)
+            //return all data
             return res.status(200).json({
                 ok: true,
-                entries
+                data,
+                total_pages,
+                page,
+                total_results
             })
         }
     } catch (error) {
@@ -85,9 +110,22 @@ const searchEntries = async (req, res) => {
 }
 
 const updateEntry = async (req, res) => {
-
     const body = req.body
+    console.log("file", typeof req.file)
+    if (typeof req.file !== 'undefined') {
+        body.image = req.file.filename
+    } else {
+        console.log(body.image)
+    }
+
+    console.log("body", body)
+
     try {
+        //call to entries models to check that entry with id exists
+        const entryExists = await getProductById(body.id_entry)
+        if (entryExists.length == 0) {
+            return res.status(404).json({ ok: false, msg: "Entry with this ID doesn't exist" })
+        }
         //call to entriesModels
         const entries = await updateProduct(body)
 
@@ -106,6 +144,9 @@ const updateEntry = async (req, res) => {
 const createEntry = async (req, res) => {
 
     const body = req.body
+    body.image = req.file.filename
+
+    //body.image = req.file.filename
     try {
         //call to entriesModels
         const entries = await createProduct(body)

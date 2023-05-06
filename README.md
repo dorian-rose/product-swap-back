@@ -29,3 +29,20 @@ Edit entry (own) /Claim entry (of other)
 - [urlBase]/entries/update
 
 Delete entry
+
+- [urlBase]/entries/delete
+
+## User endpoints
+
+User endpoints
+
+View all users (for super admin)
+
+- [urlBase]/users/users
+  • View one user by email (login /for super admin)
+- [urlBase]/users/user
+  • Create new user (register self)
+- [urlBase]/users/create
+  • Edit user (modify own account details)
+- [urlBase]/users/update
+  • Delete user (delete own account)
