@@ -28,7 +28,7 @@ const sendMail = async (req, res) => {
         subject: title,
         text: `${sellerEmail}, a user is interested in your productp, ${title}`,
 
-        html: `<div><br /><p>Gumtree</p><p>Exchange your pre-loved goods</p><p>contact@gumtree.com</p><br/><hr size="10" width="300%" align="left" color="grey"></hr>  <br/>  </div><div><div><p align="justify">Dear ${sellerEmail}</p><br /><p align="justify">You have received the following message from user ${userEmail}, who is interested in your listing '${title}'. You can contact them at the details provided to organise the exchange.</p><br /><br /> <p>"${message}"</p><br /><br /> <p>Thank you for trusting our product exchange service! You are helping keep our planet sustainable! </p><br/><p>Kind regards</p><br/><p>the team at Gumtree</p></div></div>`,
+        html: `<div><img src="https://dorian-rose.github.io/product-project-logo/tree_logo.jpg" width=100px height=100px /><br /><p>Gumtree</p><p>Exchange your pre-loved goods</p><p>contact@gumtree.com</p><br/><hr size="10" width="300%" align="left" color="grey"></hr>  <br/>  </div><div><div><p align="justify">Dear ${sellerEmail}</p><br /><p align="justify">You have received the following message from user ${userEmail}, who is interested in your listing '${title}'. You can contact them at the details provided to organise the exchange.</p><br /> <p>"${message}"</p><br /> <p>Thank you for trusting our product exchange service! You are helping to keep our planet healthy! </p><br/><p>Kind regards</p><br/><p>the team at Gumtree</p></div></div>`,
     };
     await transporter.sendMail(mailOptions, (error) => {
         if (error) {
