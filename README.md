@@ -1,48 +1,22 @@
 # product-swap-back
 
-## Entries endpoints
+## API
 
-View all entries
+Read API documentation: https://documenter.getpostman.com/view/26092520/2s93eYTXQi
 
-- [urlBase]/entries/entries?limit=5&skip=0
-  all entries by one author:
-- [urlBase]/entries/entries?user=isa@correo.es&limit=5&skip=0
+## Run project:
 
-View all entries by category
+- to run in development, use command "npm run dev"
+- to start, use command "npm start"
 
-- [urlBase]/entries/entries?limit=5&skip=0
+## Environment variables:
 
-View one entry
+- variables that must be configured can be found in .env.template file
 
-- [urlBAse]/entries/entry
+## Database
 
-Search entry (product)
+- Postgres Elephant has been used. Tables in use and associated commands can be found in >models >queries.sql
 
-- [urlBase]/entries/search
+## Code documentation
 
-Create new entry
-
-- [urlBase]/entries/create
-
-Edit entry (own) /Claim entry (of other)
-
-- [urlBase]/entries/update
-
-Delete entry
-
-- [urlBase]/entries/delete
-
-## User endpoints
-
-User endpoints
-
-View all users (for super admin)
-
-- [urlBase]/users/users
-  • View one user by email (login /for super admin)
-- [urlBase]/users/user
-  • Create new user (register self)
-- [urlBase]/users/create
-  • Edit user (modify own account details)
-- [urlBase]/users/update
-  • Delete user (delete own account)
+- Code has been documented using JS Docs. Documentation can be found at:
