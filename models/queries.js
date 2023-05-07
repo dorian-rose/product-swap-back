@@ -66,16 +66,19 @@ const queries = {
                WHERE u.email=$1`,
     addUser: `INSERT INTO users(email, name, id)
           VALUES
-          ($1, $2)`,
+          ($1, $2, $3)`,
     addRole: `INSERT INTO roles(email, role)
           VALUES 
           ($1,$2)`,
     updateUserDetails: `UPDATE users
-            SET name=$1
-            WHERE email=$5`,
+            SET name=$1, id=$2
+            WHERE email=$3`,
     deleteUser: `DELETE 
            FROM users 
            WHERE email=$1`,
+    deleteUserRole: `DELETE 
+           FROM roles 
+           WHERE email=$1`
 
 }
 

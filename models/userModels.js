@@ -44,19 +44,16 @@ const getOneUser = async (email) => {
 }
 
 //create a new user
-const createUser = async (body, admin = "") => {
-    console.log(body.email, body.firstname, body.lastname, body.whatsapp, body.password)
-    let role;
-    if (admin) { role = "admin" } else {
-        role = "user"
-    }
+const createUser = async (body) => {
+    const { email, name, id, role } = body
+
 
     let client, result;
     try {
         client = await pool.connect();
-        await client.query(queries.addUser, [body.email, body.firstname, body.lastname, body.whatsapp, body.password]);
+        await client.query(queries.addUser, [email, name, id]);
 
-        await client.query(queries.addRole, [body.email, role]);
+        await client.query(queries.addRole, [email, role]);
 
         result = { ok: true, msg: "user added" }
     } catch (error) {
@@ -67,13 +64,13 @@ const createUser = async (body, admin = "") => {
 }
 
 const changeUser = async (newData) => {
-    console.log(newData.firstname, newData.lastname, newData.whatsapp, newData.password, newData.email)
+    const { email, name, id } = newData
     let client, result;
     try {
         //connect to db
         client = await pool.connect()
         //make call, using command collected from queries.js 
-        const data = await client.query(queries.updateUserDetails, [newData.firstname, newData.lastname, newData.whatsapp, newData.password, newData.email])
+        const data = await client.query(queries.updateUserDetails, [name, id, email])
 
         result = data.rows
     } catch (error) {
@@ -89,7 +86,8 @@ const removeUser = async (email) => {
     try {
         //connect to db
         client = await pool.connect()
-        //make call, using command collected from queries.js 
+        //make call, using command collected from queries.js -first delete associated roles
+        await client.query(queries.deleteUserRole, [email])
         result = await client.query(queries.deleteUser, [email])
     } catch (error) {
         console.log(error)

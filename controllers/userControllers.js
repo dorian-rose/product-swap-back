@@ -41,21 +41,25 @@ const getUser = async (req, res) => {
         //call userModels
         const data = await getOneUser(email)
 
+        if (data.length == 0) {
+            return res.status(404).json({ ok: false, msg: "User with this email and an associated role doesn't exist" })
+        }
         res.status(200).json({
             ok: true,
             data
         });
     }
     catch (error) {
-        res.status(404).json({
+        res.status(500).json({
             ok: false,
-            msg: "Unable to verify user",
+            msg: "Unable to retrieve user",
         });
     }
 }
 
 //register (add) a new user
 const addUser = async (req, res) => {
+    console.log(req.body)
     const userData = req.body
     try {
         await createUser(userData)
@@ -63,7 +67,7 @@ const addUser = async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        res.status(500).json({ ok: false, msg: "error adding favourite" })
+        res.status(500).json({ ok: false, msg: "error adding user" })
     }
 }
 
@@ -74,6 +78,7 @@ const updateUser = async (req, res) => {
     try {
         //call to entries models to check that entry with id exists
         const userExists = await getOneUser(newData.email)
+
         if (userExists.length == 0) {
             return res.status(404).json({ ok: false, msg: "User with this email doesn't exist" })
         }
@@ -91,24 +96,18 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const { email } = req.body
 
-    // var options = {
-    //     method: 'DELETE',
-    //     url: 'https://{yourDomain}/api/v2/organizations/ORG_ID/members',
-    //     headers: { authorization: 'Bearer MGMT_API_ACCESS_TOKEN', 'cache-control': 'no-cache' },
-    //     data: { members: ['USER_ID', 'USER_ID', 'USER_ID'] }
-    // };
-
-    // axios.request(options).then(function (response) {
-    //     console.log(response.data);
-    // }).catch(function (error) {
-    //     console.error(error);
-    // });
     try {
+        //call to entries models to check that entry with id exists
+        const userExists = await getOneUser(email)
+        console.log(userExists)
+        if (userExists.length == 0) {
+            return res.status(404).json({ ok: false, msg: "User with this email doesn't exist" })
+        }
         //call to entriesModels
         await removeUser(email)
         res.status(200).json({ ok: true })
     } catch (error) {
-        res.status(500).json({ ok: false, msg: "Error deleting entry" })
+        res.status(500).json({ ok: false, msg: "Error deleting entry, check that associated roles are deleted" })
     }
 }
 
