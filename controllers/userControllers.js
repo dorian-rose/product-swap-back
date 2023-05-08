@@ -1,5 +1,5 @@
 const { getUsers, getOneUser, createUser, changeUser, removeUser } = require("../models/userModels")
-
+const { removeEntryByUser } = require("../models/entriesModels")
 /**
  * retrieves details of all users of all users
  * @param {*} req query contains limit (limit results per page) and page (page number)
@@ -131,6 +131,7 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({ ok: false, msg: "User with this email doesn't exist" })
         }
         //call to entriesModels
+        await removeEntryByUser(email)
         await removeUser(email)
         res.status(200).json({ ok: true })
     } catch (error) {

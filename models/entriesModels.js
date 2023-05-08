@@ -183,6 +183,20 @@ const removeEntry = async (id_entry) => {
     return result
 }
 
+const removeEntryByUser = async (email) => {
+    let client, result;
+    try {
+        //connect to db
+        client = await pool.connect()
+        //make call, using command collected from queries.js 
+        result = await client.query(queries.deleteEntryByUser, [email])
+    } catch (error) {
+        console.log(error)
+
+    } finally { client.release() }
+    return result
+}
 
 
-module.exports = { getAllProducts, getProductsByCategory, getProductById, searchProducts, updateProduct, createProduct, removeEntry }
+
+module.exports = { getAllProducts, getProductsByCategory, getProductById, searchProducts, updateProduct, createProduct, removeEntry, removeEntryByUser }
