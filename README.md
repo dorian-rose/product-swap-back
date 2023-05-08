@@ -41,4 +41,4 @@ The following diagram also demonstrates the SQL tables used in this project and 
 ## Other
 
 - Open source code for front end can be found at: https://github.com/dorian-rose/product-swap-front
-- Deployed project can be found at: https://product-exchange-app.netlify.app/
+- Deployed project can be found at: https://645913add10ca200b745a042--sprightly-liger-93a8e3.netlify.app/api/user
