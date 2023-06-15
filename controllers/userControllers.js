@@ -47,6 +47,7 @@ const getAllUsers = async (req, res) => {
  * @returns Object - if successful, of results including array with 1 product -if not successful, with error message. 
  */
 const getUser = async (req, res) => {
+
     try {
         const { email } = req.query;
         //call userModels
