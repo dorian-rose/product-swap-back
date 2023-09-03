@@ -141,7 +141,7 @@ const updateEntry = async (req, res) => {
     const body = req.body
     //if new image (file) is supplied, replace image property with this 
     if (typeof req.file !== 'undefined') {
-        body.image = req.file.filename
+        body.image = req.file.path
     }
     try {
         //call to entries models to check that entry with id exists
@@ -172,7 +172,7 @@ const updateEntry = async (req, res) => {
 const createEntry = async (req, res) => {
 
     const body = req.body
-    body.image = req.file.filename
+    body.image = req.file.path
 
     //body.image = req.file.filename
     try {
