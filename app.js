@@ -7,13 +7,10 @@ require("dotenv").config();
 
 const port = process.env.PORT || 3000
 
-const corsOptions = {
-    origin: ['https://product-swap-50b14d1aec35.herokuapp.com/', 'http://localhost:5173']
 
-};
 
 // Use the CORS options
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 //to parse JSON and URLENCODED req.bodies
