@@ -60,7 +60,7 @@ const getOneUser = async (email) => {
 */
 const createUser = async (body) => {
     const { email, name, id, role } = body
-
+    console.log("in create", email, name, id, role)
     let client, result;
     try {
         //connect
