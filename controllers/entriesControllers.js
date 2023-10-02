@@ -175,6 +175,7 @@ const createEntry = async (req, res) => {
     body.image = req.file.path
 
     //body.image = req.file.filename
+    //changed for cloudinary
     try {
         //call to entriesModels
         const entries = await createProduct(body)
