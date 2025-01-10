@@ -15,7 +15,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        // folder: 'your_folder_name', // Optional - specify a folder in your Cloudinary account
+        //folder: 'gifts', // Optional - specify a folder in your Cloudinary account
         // format: async (req, file) => 'jpg', // Optional - specify the format (you can also keep the original format)
         public_id: (req, file) => file.originalname
     },

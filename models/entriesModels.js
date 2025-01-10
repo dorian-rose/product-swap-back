@@ -9,6 +9,8 @@ const pool = new Pool({
     user: process.env.ELEPHANT_USER,
     database: process.env.ELEPHANT_DB,
     password: process.env.ELEPHANT_PASS,
+    port: 5432,
+    ssl: { rejectUnauthorized: false },
 });
 
 
